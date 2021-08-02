@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Activities.GetPostActivity"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="202dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="serif"
+            android:text="Item to be Posted"
+            android:textSize="24sp"
+             />
+
+        <EditText
+            android:id="@+id/etItemPosting"
+            android:layout_width="364dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="Microwave, Bike, etc"
+            android:inputType="textPersonName"
+           />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="298dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="serif"
+            android:text="Reason For Posting Item"
+            android:textSize="24sp"
+             />
+
+        <EditText
+            android:id="@+id/etPostReason"
+            android:layout_width="364dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="Graduated, Moving Out, etc"
+            android:inputType="textPersonName"
+             />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="302dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="serif"
+            android:text="Item Category"
+            android:textSize="24sp"
+            />
+
+        <Spinner
+            android:id="@+id/Itemspinner"
+            android:layout_width="277dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+           />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="243dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="serif"
+            android:text="Select Photo"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            />
+
+    <Button
+        android:id="@+id/btnLaunchCamera"
+        android:layout_width="251dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/NiceBlue"
+        android:text="Take Photo Using Camera"
+        app:cornerRadius="15dp" />
+
+    <Button
+        android:id="@+id/btnGetPhotoFromGallery"
+        android:layout_width="255dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/NiceBlue"
+        android:text="Choose Photo From Gallery"
+        app:cornerRadius="15dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+    <ImageView
+        android:id="@+id/ivPostPicture"
+        android:scaleType="centerCrop"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="100dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+      <Space
+          android:layout_width="match_parent"
+          android:layout_height="15dp"/>
+
+    <Button
+        android:id="@+id/btnSubmitPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/NiceBlue"
+        android:text="Save Post" />
+
+
+</LinearLayout>
+</ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="270dp"/>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTintMode="multiply"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/NiceBlue"
+            android:theme="@style/Widget.AppCompat.ProgressBar">
+
+        </androidx.core.widget.ContentLoadingProgressBar>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

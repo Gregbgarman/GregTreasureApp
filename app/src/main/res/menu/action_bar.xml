@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--
+    <item
+        android:id="@+id/icAppLogo"
+        android:title="AppLogo"
+        app:showAsAction="always"
+        app:actionLayout="@layout/logoactionbar"
+
+        />
+-->
+    <item
+        android:id="@+id/icSpace"
+        android:title=" "
+        app:showAsAction="ifRoom"
+
+        />
+
+    <item
+        android:id="@+id/icMessages"
+        app:actionLayout="@layout/notificationmessagelayout"
+        app:showAsAction="always"
+        android:title="Messages"/>
+
+
+    <item
+        android:id="@+id/icSettings"
+        android:icon="@drawable/ic_settings"
+        android:title="settings"
+        app:showAsAction="always"/>
+
+
+
+</menu>

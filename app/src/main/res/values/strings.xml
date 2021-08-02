@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TreasureApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="GoogleAPIKey">AIzaSyAcOonDhWocUUqb2OLzoClRVeuuL4bJ6ig</string>
+
+    <string name="SchoolsAPIKey">"RIOFI2z5f5yCkKw0R364P7T0kHqNoS5nnzXWoCpU"</string>
+    <string name="SchoolsRestAPIKey">"jHxZnW7P3r2fNXUDnnAd3jktXyQYWWIY7fqvUSp3"</string>
+
+    <string name="ParseAppId">QPsvG29dmQOj3LTKjX7U8IpWbwfGl1t6FmhrKklQ</string>
+    <string name="ParseClientKey">HVNMNJ4qi08s6nW89ruTl2zUNQ6JQW5OhKaBD8EB</string>
+
+
+</resources>

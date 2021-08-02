@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mobile.treasureapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+    </queries>
+
+
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_trashcanimage"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_trashcanimage_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TreasureApp">
+        <activity android:name=".Activities.SettingsActivity"></activity>
+        <activity android:name=".Activities.OtherPeopleProfileActivity" />
+        <activity android:name=".Activities.SendMessagesActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.treasureapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+
+        <activity android:name=".Activities.GetPostActivity" />
+        <activity android:name=".Activities.UserSchoolActivity" />
+        <activity android:name=".Activities.ViewMessagesActivity" />
+        <activity android:name=".Activities.UserNameActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GoogleAPIKey" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".Activities.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity" />
+    </application>
+
+</manifest>
