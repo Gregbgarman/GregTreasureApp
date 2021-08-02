@@ -66,10 +66,10 @@ public class FragmentProfile extends Fragment {
         ivBackgroundPic=view.findViewById(R.id.ivoppProfileBackground);
         ivProfilePic=view.findViewById(R.id.ivoppUserProfilePic);
         tvStudentAt=view.findViewById(R.id.tvoppStudentAt);
-        Glide.with(getContext()).load(MainActivity.CurrentUser.GetSchoolImageUrl()).into(ivBackgroundPic);
+        Glide.with(getContext()).load(MainActivity.CurrentUser.GetSchoolImageUrl()+ getResources().getString(R.string.GoogleAPIKey)).into(ivBackgroundPic);
 
         tvUserName.setText(MainActivity.CurrentUser.GetName());
-        tvStudentAt.setText("Student at " + MainActivity.CurrentUser.GetSchoolAttending());
+        tvStudentAt.setText("Student at " + MainActivity.CurrentUser.GetSchoolAttending() );
 
         Glide.with(getActivity()).load(MainActivity.ProfilePictureBitmap).circleCrop().into(ivProfilePic);
         //Glide.with(getActivity()).load(MainActivity.BackGroundPhotoUri).into(ivBackgroundPic);

@@ -6,8 +6,8 @@
     android:id="@+id/GenericCardContainer"
     android:layout_width="260dp"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="0dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     app:cardBackgroundColor="#ffffff"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
@@ -20,7 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvGPUsername"
@@ -28,6 +28,7 @@
             android:layout_height="38dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/alike_angular"
+            android:textAlignment="viewStart"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/tvGPPostTime"
             app:layout_constraintTop_toTopOf="parent" />

@@ -163,7 +163,7 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<FileDownloadTask.TaskSnapshot> task) {
-                    Glide.with(OtherPeopleProfileActivity.this).load(user.GetSchoolImageUrl()).into(ivbackgroundpic);
+                    Glide.with(OtherPeopleProfileActivity.this).load(user.GetSchoolImageUrl()+ getResources().getString(R.string.GoogleAPIKey)).into(ivbackgroundpic);
 
                 }
             });
