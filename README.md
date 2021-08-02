@@ -18,19 +18,11 @@ many old skills would be reinforced in this project, as they would be essential 
 
 ## Features
 - User account creation
-  * Stored on Google Firebase
-  * Includes First and last name, as well as a profile picture
 - Searching for U.S. universities and colleges
-  * User confirms school once shown an image of their school and location on Google Maps
 - Posting items to home feed that the user wishes to get rid of
-  * User can select image from phone photo gallery or use built in phone camera to take picture of item
-  * Each item will appear under a given category- Furniture, Cleaning, etc.
 - User can "like" other people's posts
-  * Once liked, that item will be added to the user's list of favorite items
-  * To help the user know they have previously liked an item, that item's background color is changed on feed
 - User can filter items on home feed by category
 - User can direct message other users to inquire about obtaining items
-  * Messages are stored on Google Firebase
 - Live message querying so that user is notified by a red notification on action bar when receive new messages
 - Users can view other's profiles and see what items they have posted
 - User can remove items they have posted after giving them away
