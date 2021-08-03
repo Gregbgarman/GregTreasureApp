@@ -1,6 +1,9 @@
 # Treasure App
 
 
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/addfav.gif" width=250><br> <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/addfav.gif" width=250><br>
+
+
 ### Overview:  
 
 Treasure is a donating app intended for college students that allows for getting rid of items that
