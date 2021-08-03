@@ -34,17 +34,17 @@ many old skills would be reinforced in this project, as they would be essential 
 
 
 ### Posting an item
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/posting.gif" width=250><br>
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/Posting.gif" width=250><br>
 
-### Viewing item feed and filtering by type and adding item to favorites list
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/liking.gif" width=250><br>
+### Viewing item feed and adding item to favorites list
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/addfav.gif" width=250><br>
 
 
 ### Direct messaging other users and observing new message counter
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/sending message.gif" width=250><br>
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/messaging2.gif" width=250><br>
 
 ### Viewing other user's profile and removing items from app
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/viewing profile.gif" width=250><br>
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/others profilez.gif" width=250><br>
 
 
 
