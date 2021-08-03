@@ -30,7 +30,7 @@ many old skills would be reinforced in this project, as they would be essential 
 ## Walkthrough videos of features
 
 ### Account Creation and School Selection
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/login feature.gif" width=250><br>
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/accountcreation.gif" width=250><br>
 
 
 ### Posting an item
