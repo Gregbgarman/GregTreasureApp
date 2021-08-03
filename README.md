@@ -1,7 +1,6 @@
 # Treasure App
 
-<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/good image3.PNG" width=250> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage1.PNG" width=250><br> 
-<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage2.PNG" width=250><img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage4.PNG" width=250><br>
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/good image3.PNG" width=250> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage1.PNG" width=250> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage2.PNG" width=250><img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage4.PNG" width=250><br>
 
 
 
