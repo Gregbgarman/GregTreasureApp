@@ -1,6 +1,6 @@
 # Treasure App
 
-
+<img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage3.PNG" width=250>
 <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage1.PNG" width=250> <img src="https://github.com/Gregbgarman/GregTreasureApp/blob/master/goodimage2.PNG" width=250><br>
 
 
