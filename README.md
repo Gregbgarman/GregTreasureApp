@@ -85,97 +85,13 @@ many old skills would be reinforced in this project, as they would be essential 
             
       * Settings Screen
             * User can change their profile picture and log out
+      
+      * Confirm School Screen
+            * User is shown selected school on Google Maps and image of school
+      
+      * Find School Screen
+            * User searches schools and list of schools actively appears as user types
             
-## User Interface Design
-
-    - Splash Screen (activity)
-         * Shows for two seconds when user opens the app. Has no functional purpose.
-         * Contains two imageviews to display
-    
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/splashcreen.PNG" width=250><br>
-
-    
-    - Login Screen (activity)
-         * Requires user to create account on Firebase by entering an email and password
-         * Two edittexts used to obtain this information, two buttons used for either logging in/signin up
-         * Two more edittexts also used that appear above email or password when user starts typing
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/login screen.PNG" width=250><br>
-   
-    
-    - Name and Profile Screen (activity)
-         * continuation of account creation
-         * Two edittexts used to obtain first and last name
-         * Imageview and button used to obtain a profile picture from photo gallery
-         * Another button used to submit information
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/create account screen.PNG" width=250><br>
-   
-    - Find School Screen (activity)
-         * Used to pull up list of schools as user types school name
-         * contains an edittext the user types in, a textview displaying "Find your school", and a recyclerview that shows each school
-         * Each layout in the recyclerview has two textviews-displaying the school name and state, and a button to select the school
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/find school screen.PNG" width=250><br>
-   
-    - Confirm School (dialog)
-         * Used to confirm the correct school
-         * Uses 4 textviews to display school name and address, two imageviews to show school location on Google Maps and iconic image of schol
-         * Two buttons to allow user to confirm or cancel their school of choice
-         
-<img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/confirm school screen.PNG" width=250><br>
- 
-    - Home Screen (Fragment)
-         * Shows most recent 10 posts from all possible categories
-         * Has 10 recyclerviews so that user can view most recent 10 posts for all categories, or use a spinner to filter their search in which only
-         one recyclerview is then seen on screen. Textview displays category above it.
-         * Floating action button allows user to go and creat post
-         * Action bar contains two custom menu icons that allow the user to access settings activity and messages activity. Contains Imageview of "Treasure"
-         * Each post contains two imageviews-profile picture of poster and the item they posted, also has textviews to display username and when it was posted
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/home screen.PNG" width=250><br>
-
-    - Post options screen (dialog)
-         * Shown when user clicks on post and gives them 3 options
-         * 3 buttons used so user has options of adding post to favorites list, viewing poster's profile, or messaging the user
-         * Imageview shows the post item also
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/post options screen.PNG" width=250><br>
-    
-    - User Profile Screen (fragment)
-         * User can see their personal profile 
-         * 2 Imageviews used to see profile picture and the background image which is of the school they chose
-         * Contains textviews displaying their name and schol they attend
-         * ViewPager/Tablayout used to switch between recyclerviews containing items a user has posted and their favorite items list
-         * Each recyclerview layout is simply an imageview
-         
-  <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/user profile screen.PNG" width=250><br>
-
-    - Other User's profile screen (activity)
-         * User can view other user's profiles
-         * Contains an imageview for their profile picture, imageview for the background image which is they school they attend
-         * Contains textviews displaying their name and schol they attend
-         * Contains a button that allows person viewing to send that person a message
-         * Contains a recyclerview that displays the items that user has posted-Recyclerview layout is simply an imageview
-         
-  <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/other person profile.PNG" width=250><br>
-   
-    - Conversation Screen (activity)
-         * Contains a recyclerview that contains conversations of other users that the user has messaged
-         * Each layout in the recyclerview contains an imageview of the other person's profile picture, textview for their name,
-         and textview containing the most recent message sent in the conversation
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/conversation screen.PNG" width=250><br>
-       
-     - Direct Message Screen (activity)
-         * Allows users to send messages to one another in a typical texting scenario
-         * Contains an edittext and "send" button that allows the user to send a message to the other person
-         * Textview used at top of screen to display the other person's name
-         * Recyclerview used to display messages sent between users
-         
- <img src="https://github.com/RossFleming/COP4656Project-TreasureApp/blob/master/dm screen.PNG" width=250><br>
- 
- 
         
    ## Databases Used
       - Google Firebase
