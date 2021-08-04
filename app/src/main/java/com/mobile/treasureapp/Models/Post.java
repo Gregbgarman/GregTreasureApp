@@ -1,24 +1,15 @@
 package com.mobile.treasureapp.Models;
 
-import android.net.Uri;
-
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
-import org.parceler.Parcel;
-
-import java.util.Date;
-
-
-
 @ParseClassName("Post")
-public class Post extends ParseObject {
+public class Post extends ParseObject {         //stored on Parse
 
     public static final String KEY_USERNAME="PosterUserName",KEY_USERID="PosterID",KEY_USERPROFILEPIC="PosterProfilePic",
     KEY_CATEGORY="Category",KEY_REASON="PostReason",KEY_SCHOOL="SchoolAttending",KEY_ITEMNAME="ItemName",
     KEY_POSTIMAGE="PostImage";
-
 
 
     public void SetPosterProfilePic(ParseFile posterProfilePic) {

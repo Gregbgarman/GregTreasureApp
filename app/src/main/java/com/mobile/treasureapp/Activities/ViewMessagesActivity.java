@@ -50,14 +50,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ViewMessagesActivity extends AppCompatActivity {
-
-
+public class ViewMessagesActivity extends AppCompatActivity {       //shows list of recent conversations user has had
 
     private RecyclerView recyclerView;
     private ViewMessagesAdapter viewMessagesAdapter;
     private List<MostRecentMessage> recentMessageList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +75,10 @@ public class ViewMessagesActivity extends AppCompatActivity {
         recyclerView.setAdapter(viewMessagesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         QueryRecentMessages();
-
     }
 
-
-
-    private void QueryRecentMessages(){
+    private void QueryRecentMessages(){         //The goal is to get the most recent message sent in a live chat between two people
+                                                //and display it in a textview via the adapter.
         ParseQuery<MostRecentMessage> query=ParseQuery.getQuery(MostRecentMessage.class);
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<MostRecentMessage>() {
@@ -105,9 +100,7 @@ public class ViewMessagesActivity extends AppCompatActivity {
                         }
 
                     }
-
                 }
-
                 viewMessagesAdapter.notifyDataSetChanged();
             }
         });
@@ -116,7 +109,6 @@ public class ViewMessagesActivity extends AppCompatActivity {
     }
 
     private boolean IsADuplicate(MostRecentMessage mostRecentMessage){      //4 cases
-
 
         for (MostRecentMessage mostRecentMessageinList:recentMessageList){
 

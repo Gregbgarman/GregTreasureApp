@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 
-public class UserNameActivity extends AppCompatActivity {
+public class UserNameActivity extends AppCompatActivity {           //screen after login screen to get user's name and profile picture
 
     private EditText etFirstName,etLastName;
     private Button btnSubmit;
@@ -50,7 +50,6 @@ public class UserNameActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private String PictureID;
     private Uri PictureUri;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +90,7 @@ public class UserNameActivity extends AppCompatActivity {
                     Toast.makeText(UserNameActivity.this, "Missing Information", Toast.LENGTH_SHORT).show();
                 }
 
-                if (FirstName.length()>0 && LastName.length()>0){
+                if (FirstName.length()>0 && LastName.length()>0){       //fields can't be empty
                     User user=new User();
                     user.SetEmail(Email);
                     user.SetUserID(uid);
@@ -109,12 +108,11 @@ public class UserNameActivity extends AppCompatActivity {
         });
     }
 
-    public void AccessPhotos(){
+    public void AccessPhotos(){             //Launching photo gallery
             Intent intent=new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent,321);
-
     }
 
     @Override
@@ -122,7 +120,8 @@ public class UserNameActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode==RESULT_OK && requestCode==321 && data!=null && data.getData()!=null){
-            PictureID= UUID.randomUUID().toString();
+
+            PictureID= UUID.randomUUID().toString();        //Photos are stored in firebase Storage and located through unique path id, created here
             PictureUri=data.getData();
             Glide.with(this).load(PictureUri).circleCrop().into(ivFirstPicture);
             UserUploadedPic=true;
@@ -130,7 +129,7 @@ public class UserNameActivity extends AppCompatActivity {
 
     }
 
-    public void SavePhotoToFirebase(User user){
+    public void SavePhotoToFirebase(User user){         //save newly chosen image to Storage in firebase
         StorageReference reference=null;
 
         try {
@@ -158,7 +157,8 @@ public class UserNameActivity extends AppCompatActivity {
                 }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull  Task<UploadTask.TaskSnapshot> task) {
-                    GoNextActivity(user);
+
+                GoNextActivity(user);               //going to next activity to choose school
             }
         });
 

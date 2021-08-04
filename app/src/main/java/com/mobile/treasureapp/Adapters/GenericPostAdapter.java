@@ -33,7 +33,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-public class GenericPostAdapter extends RecyclerView.Adapter<GenericPostAdapter.ViewHolder>  {
+public class GenericPostAdapter extends RecyclerView.Adapter<GenericPostAdapter.ViewHolder>{        //used with all posts ever seen in home fragment
 
     public interface GenericPostAdapterInterface{
         public void ShowMenu(Bundle bundle);
@@ -57,10 +57,10 @@ public class GenericPostAdapter extends RecyclerView.Adapter<GenericPostAdapter.
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view=null;
         if (UseNormalSize==true){
-            view= LayoutInflater.from(context).inflate(R.layout.eachgenericpost,parent,false);
+            view= LayoutInflater.from(context).inflate(R.layout.eachgenericpost,parent,false);      //shown in the general home screen (spinner not used)
         }
         else{
-            view= LayoutInflater.from(context).inflate(R.layout.eachgenericpostsmall,parent,false);
+            view= LayoutInflater.from(context).inflate(R.layout.eachgenericpostsmall,parent,false);     //used when spinner is filtering by type-need smaller views
         }
 
        return new ViewHolder(view);
@@ -107,8 +107,7 @@ public class GenericPostAdapter extends RecyclerView.Adapter<GenericPostAdapter.
 
         public void bind(Post post){
 
-
-            for (String itemid: MainActivity.FavoriteItemsId){
+            for (String itemid: MainActivity.FavoriteItemsId){      //if item is favorited, background color is blue
                 if (post.getObjectId().equals(itemid)){
                     cardView.setCardBackgroundColor(Color.parseColor("#A1DBE1"));
                 }
@@ -122,30 +121,12 @@ public class GenericPostAdapter extends RecyclerView.Adapter<GenericPostAdapter.
 
             if (!post.GetPosterID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {     //if not yourself
 
-                cardView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        //show a dialog back in fragment, must pass the bundle so it can be used
-
-                        return false;
-                    }
-                });
-
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-
-
-
-                     //   Intent intent = new Intent(context, SendMessagesActivity.class);
+                    public void onClick(View v) {           //when click on post, showing options
                         Bundle mbundle=new Bundle();
                         mbundle.putParcelable("f",post);
-                     //   intent.putExtra("thebundle",mbundle);
-                     //   intent.putExtra("msg","FromPosts");
-
                         genericPostAdapterInterface.ShowMenu(mbundle);
-
-                       // context.startActivity(intent);
 
                     }
                 });

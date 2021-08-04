@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-public class User {
+public class User {         //class created to be stored and retrieved from firebase
 
     public String Email;
     public String Name;
@@ -18,12 +18,10 @@ public class User {
     public String ProfilePictureID;     //Each profile picture on cloud will have own ID, and there will be a "DefaultImage" also
     public String SchoolAttending;
     public String SchoolImageUrl;
-    public ArrayList<String> FavoriteItemsId;
+    public ArrayList<String> FavoriteItemsId;       //stores unique ID of posts stored on Parse
     public String FirebaseKey;
 
-    public User(){
-
-    }
+    public User(){}
 
     public void SetFirebaseKey(String key){
         FirebaseKey=key;

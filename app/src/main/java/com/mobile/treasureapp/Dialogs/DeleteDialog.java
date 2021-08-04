@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class DeleteDialog extends DialogFragment {
+public class DeleteDialog extends DialogFragment {      //pops up when user clicks on favorite item or post on their home fragment
 
     public interface DeleteDialogInterface{
         public void UpdateFeed();
@@ -63,7 +63,6 @@ public class DeleteDialog extends DialogFragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
             ivItem = view.findViewById(R.id.ivDeletedialog);
             tvItemName = view.findViewById(R.id.tvdeletedialogitemname);
             tvPostedAt = view.findViewById(R.id.tvdeletedialogpostedat);
@@ -71,9 +70,10 @@ public class DeleteDialog extends DialogFragment {
             Glide.with(getContext()).load(PostToDelete.GetPostImage().getUrl()).into(ivItem);
             tvItemName.setText(PostToDelete.GetItemName());
 
+                            //will show proper message based on whether user clicked on a post or favorited item
+
         if (IsFavorite==false) {
             tvPostedAt.setText("You Posted "+ TimeFormatter.getTimeDifference(PostToDelete.getCreatedAt().toString()) + " Ago");
-
 
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,7 +93,7 @@ public class DeleteDialog extends DialogFragment {
                 }
             });
 
-        }   //end isfavorite==false
+        }
 
 
         else{
@@ -135,16 +135,16 @@ public class DeleteDialog extends DialogFragment {
             }
         });
 
-
     }
 
-    private void RemoveFromFavorites(){         //Object id's of posts on parse stored on Firebase
+    private void RemoveFromFavorites(){         //Removing favorited items from array and updating firebase
         MainActivity.FavoriteItemsId.remove(PostToDelete.getObjectId());
         Map<String, Object> Updates = new HashMap<>();
         Updates.put("FavoriteItemsId", MainActivity.FavoriteItemsId);
 
         DatabaseReference mdatabase= FirebaseDatabase.getInstance().getReference("User").child(MainActivity.CurrentUser.GetFirebaseKey());
-        mdatabase.updateChildren(Updates);
+
+        mdatabase.updateChildren(Updates);          //updating firebase then updating what is seen on feed
         deleteDialogInterface.UpdateFeed();
     }
 
@@ -153,7 +153,7 @@ public class DeleteDialog extends DialogFragment {
     }
 
     @Override
-    public void onAttach(@NonNull @NotNull Context context) {
+    public void onAttach(@NonNull @NotNull Context context) {           //attaching interface
         super.onAttach(context);
         if (context instanceof DeleteDialog.DeleteDialogInterface){
             deleteDialogInterface=(DeleteDialog.DeleteDialogInterface)context;

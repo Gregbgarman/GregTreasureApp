@@ -3,39 +3,27 @@ package com.mobile.treasureapp.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mobile.treasureapp.Activities.GetPostActivity;
-import com.mobile.treasureapp.Activities.SendMessagesActivity;
-import com.mobile.treasureapp.Activities.UserSchoolActivity;
 import com.mobile.treasureapp.Adapters.GenericPostAdapter;
-import com.mobile.treasureapp.Dialogs.ConfirmSchoolDialog;
-import com.mobile.treasureapp.Dialogs.LongClickDialog;
-import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.Models.Post;
 import com.mobile.treasureapp.R;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +38,7 @@ import java.util.List;
 //Tailgating
 //Other
 
-public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageInterface {
+public class HomeFragment extends Fragment {
 
     public interface HomeFragmentInterface{
         public void RefreshFeed();
@@ -72,7 +60,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
     private HashMap<String,List<Post>> ListandTitleHashMap;
 
-    private List<Post> KitchenList;
+    private List<Post> KitchenList;             //each category has its own List and adapter and recyclerview
     private List<Post> TailgatingList;
     private List<Post> FurnitureList;
     private List<Post> PCGamingList;
@@ -98,7 +86,6 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
     private LinearLayout linearLayout;
     private RelativeLayout relativeLayout;
 
-    private Bundle BundleSentFromAdapter;
     private GenericPostAdapter.GenericPostAdapterInterface genericPostAdapterInterface;
     private SwipeRefreshLayout swipeContainer;
 
@@ -117,7 +104,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
         swipeContainer=view.findViewById(R.id.swipeContainer);
         swipeContainer.setColorSchemeResources(R.color.NiceBlue);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {        //refresh feed with swipe to refresh
             @Override
             public void onRefresh() {
                 swipeContainer.setRefreshing(false);
@@ -125,7 +112,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
             }
         });
 
-         genericPostAdapterInterface=new GenericPostAdapter.GenericPostAdapterInterface() {
+         genericPostAdapterInterface=new GenericPostAdapter.GenericPostAdapterInterface() {     //mainactivity handles this-when user clicks on post through adapter
             @Override
             public void ShowMenu(Bundle bundle) {
                 showOptionsInMain.GetOptions(bundle);
@@ -135,7 +122,6 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
         linearLayout=view.findViewById(R.id.FHLinearLayout);
         relativeLayout=view.findViewById(R.id.FHRelativeLayout);
         relativeLayout.setVisibility(View.INVISIBLE);
-
         RVFurniture=view.findViewById(R.id.rvFurniturePosts);
         RVKitchen=view.findViewById(R.id.rvKitchenPosts);
         RVPCGaming=view.findViewById(R.id.rvPCGamingPosts);
@@ -144,14 +130,12 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
         RVTransportation=view.findViewById(R.id.rvTransportationPosts);
         RVSupplies=view.findViewById(R.id.rvSuppliesPosts);
         RVBedding=view.findViewById(R.id.rvBedding);
-
-
         RVOther=view.findViewById(R.id.rvOtherPosts);
         LoneRV=view.findViewById(R.id.RVSingle);
         FilterSpinner=view.findViewById(R.id.FilterSpinner);
 
         fabPost=view.findViewById(R.id.fabPosts);
-        fabPost.setOnClickListener(new View.OnClickListener() {
+        fabPost.setOnClickListener(new View.OnClickListener() {         //clicking floating action button launches intent to create post
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), GetPostActivity.class));
@@ -188,7 +172,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
+                //nothing happens
         }
     };
 
@@ -203,7 +187,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
     @Override
     public void onResume() {
         super.onResume();
-        if (JustMadePost==true){
+        if (JustMadePost==true){                    //refreshing feed after user makes a post
             homeFragmentInterface.RefreshFeed();
             JustMadePost=false;
         }
@@ -211,7 +195,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
 
     @Override
-    public void onAttach(@NonNull @NotNull Context context) {
+    public void onAttach(@NonNull @NotNull Context context) {           //attaching interface method
         super.onAttach(context);
         if(context instanceof HomeFragmentInterface){
             homeFragmentInterface = (HomeFragmentInterface) context;
@@ -228,7 +212,8 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
     }
 
-    private void InitializeContainers() {
+    private void InitializeContainers() {       //Initializing all arrays and the HashMap
+
         KitchenList=new ArrayList<>();TailgatingList=new ArrayList<>();FurnitureList=new ArrayList<>();PCGamingList=new ArrayList<>();
         CleaningList=new ArrayList<>();OtherList=new ArrayList<>();TransportationList=new ArrayList<>();BeddingList=new ArrayList<>();
         SuppliesList=new ArrayList<>();
@@ -240,14 +225,13 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
         ListandTitleHashMap=new HashMap<>();
 
 
-        for (Post post:postArrayList){      //every post for a school here
+        for (Post post:postArrayList){      //every post for a school here gets placed accordingly
 
             if (post.GetCategory().equals("Furniture")){
                 FurnitureList.add(post);
                 if (FurnitureListLast10.size()<10) {
                     FurnitureListLast10.add(post);
                 }
-
             }
 
             else if (post.GetCategory().equals("PC/Gaming")){
@@ -305,7 +289,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
         //9 categories
 
-        ListandTitleHashMap.put("Tailgating",TailgatingList);
+        ListandTitleHashMap.put("Tailgating",TailgatingList);           //HashMap used when user sorts items by category using Spinner
         ListandTitleHashMap.put("Bedding/Mattress",BeddingList);
         ListandTitleHashMap.put("Furniture",FurnitureList);
         ListandTitleHashMap.put("Kitchen/Kitchen Appliances",KitchenList);
@@ -317,7 +301,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
     }
 
-    private void InitializeAllAdaptersLast10(){
+    private void InitializeAllAdaptersLast10(){             //what user will see on default home screen
         relativeLayout.setVisibility(View.INVISIBLE);
         linearLayout.setVisibility(View.VISIBLE);
 
@@ -359,7 +343,7 @@ public class HomeFragment extends Fragment {    // LongClickDialog.SendMessageIn
 
     }
 
-    private void ChangeLayout(String NewCategory){
+    private void ChangeLayout(String NewCategory){      //filtering by one category
        linearLayout.setVisibility(View.INVISIBLE);
        relativeLayout.setVisibility(View.VISIBLE);
         List<Post> LoneList=ListandTitleHashMap.get(NewCategory);

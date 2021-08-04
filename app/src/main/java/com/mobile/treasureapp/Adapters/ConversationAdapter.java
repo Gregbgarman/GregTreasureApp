@@ -23,13 +23,11 @@ import java.util.List;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder>{
 
-    private Context context;
+    private Context context;                        //this is the adapter used for the conversations between users
     private List<Message> messageList;
     private boolean IsMe;
     private Uri MyProfilePic;
     private ParseFile OtherPersonProfilePic;
-
-    //load profile pictures into the constructor
 
 
     public ConversationAdapter(Context context, List<Message> messageList,Uri MyProfilePic,ParseFile OtherPersonProfilePic){
@@ -40,7 +38,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position) {          //figuring out who the sender is, either logged in user or isn't
         Message message=messageList.get(position);
 
         if (message.GetSenderID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
@@ -58,7 +56,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view=null;
-
+                                    //using correct layouts depending on who is the sender and receiver
         if (viewType==1) {
             view = LayoutInflater.from(context).inflate(R.layout.mymessagelayout, parent, false);
         }
@@ -100,15 +98,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         public void bind(Message message){
 
-
             String formattedmsg="";
             String themessage= message.GetMessageContent();
             String temp="";
             boolean NeedBreak=false;
             for (int i=0;i<themessage.length();i++){
                temp=temp+themessage.charAt(i);
-               formattedmsg=formattedmsg+themessage.charAt(i);
-                if (temp.length()%18==0){
+               formattedmsg=formattedmsg+themessage.charAt(i);          //formatting message so 18 characters in each line
+                if (temp.length()%18==0){                               //before wrapping text using \n
                     NeedBreak=true;
                 }
 
@@ -124,7 +121,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 Glide.with(context).load(MyProfilePic).circleCrop().into(ivPhoto);
             }
             else{
-
                 Glide.with(context).load(OtherPersonProfilePic.getUrl()).circleCrop().into(ivPhoto);
             }
 

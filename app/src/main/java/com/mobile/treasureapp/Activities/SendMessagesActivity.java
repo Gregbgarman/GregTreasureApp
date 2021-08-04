@@ -63,8 +63,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class SendMessagesActivity extends AppCompatActivity {
+public class SendMessagesActivity extends AppCompatActivity {       //direct messaging activity
 
+    private static final String TAG = "SendMessagesActivity";
     private RecyclerView RVMessages;
     private EditText etMessageContent;
     private TextView tvOtherPersonName;
@@ -77,7 +78,7 @@ public class SendMessagesActivity extends AppCompatActivity {
     private ConversationAdapter conversationAdapter;
     private MostRecentMessage mostRecentMessage;
 
-    private Post OtherPersonPost;      //keep an eye on this,could be a different way of getting data
+    private Post OtherPersonPost;
 
     private int counter;
     private MostRecentMessage MsgFromIntent;        //has data needed to create other person
@@ -93,7 +94,7 @@ public class SendMessagesActivity extends AppCompatActivity {
 
         MainActivity.InsideMessagingActivity=true;      //using this as a flag to control live querying
         mostRecentMessage=null;
-        OtherPersonPost=null;           //keep tabs on
+        OtherPersonPost=null;
         counter=0;
 
         btnSendMessage=findViewById(R.id.btnSendTheMessage);
@@ -101,7 +102,10 @@ public class SendMessagesActivity extends AppCompatActivity {
         etMessageContent=findViewById(R.id.etTheMessage);
         tvOtherPersonName=findViewById(R.id.tvOtherPersonName);
 
-        if (getIntent().getStringExtra("msg").equals("FromMessages")) {
+        //different points of entry into this activity, from the list of conversations or from a Post/Other person profile
+        // The other person is created from the data that is obtained from those entry ways
+
+        if (getIntent().getStringExtra("msg").equals("FromMessages")) {         //coming from list of conversations
             Bundle bundle = getIntent().getBundleExtra("mybundle");
             MsgFromIntent = bundle.getParcelable("recentmsg");
 
@@ -119,7 +123,8 @@ public class SendMessagesActivity extends AppCompatActivity {
         }
 
 
-        else {
+        else {          //entering activity from a Post or other user's profile activity-this same Post used to get info to create other person
+
             Bundle bundle = getIntent().getBundleExtra("thebundle");
             OtherPersonPost = bundle.getParcelable("f");
             OtherPersonID = OtherPersonPost.GetPosterID();
@@ -128,40 +133,37 @@ public class SendMessagesActivity extends AppCompatActivity {
             OtherPersonUserName=OtherPersonPost.GetPosterUserName();
         }
 
-        databaseMessages=FirebaseDatabase.getInstance().getReference("Message");
+        databaseMessages=FirebaseDatabase.getInstance().getReference("Message");        //Getting reference to messages on firebase
         MessageList=new ArrayList<>();
         OnFirstLoad=true;
 
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {      //sending a message
             @Override
-            public void onClick(View v) {       //create message object here and save backend
+            public void onClick(View v) {       //create message object here and save on backend
                 Message message=new Message();
                 message.SetSenderID(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 message.SetReceiverID(OtherPersonID);
                 message.SetMessageContent(etMessageContent.getText().toString().trim());
                 message.SetCreatedAt(Calendar.getInstance().getTime());
-               databaseMessages.child(databaseMessages.push().getKey()).setValue(message);
-               Collections.reverse(MessageList);
-               MessageList.add(message);
-               Collections.reverse(MessageList);
-               etMessageContent.getText().clear();
-               conversationAdapter.notifyDataSetChanged();
-
-               SetMostRecentMessage(message);
+                databaseMessages.child(databaseMessages.push().getKey()).setValue(message);
+                Collections.reverse(MessageList);
+                MessageList.add(message);
+                Collections.reverse(MessageList);
+                etMessageContent.getText().clear();
+                conversationAdapter.notifyDataSetChanged();
+                SetMostRecentMessage(message);
 
             }
         });
 
         QueryMessagesSentToMe();
 
-        //GetMostRecentMessage();    placing inside chain of queries
-
-        //QueryMessagesSentToMe() -> QueryMyMessages() -> GetMostRecentMessage() -> SetUpLiveQueryParse()
-
+        // Method order:  QueryMessagesSentToMe() -> QueryMyMessages() -> GetMostRecentMessage() -> SetUpLiveQueryParse()
 
     }
 
-    private void QueryMyMessages(){
+    private void QueryMyMessages(){     //querying all messages I have sent, then sorting
+
        databaseMessages.orderByChild("SenderID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -169,33 +171,31 @@ public class SendMessagesActivity extends AppCompatActivity {
                         Iterator<DataSnapshot> iter = snapshot.getChildren().iterator();
                         while (iter.hasNext()) {
                             Message message=iter.next().getValue(Message.class);
-                            if (message.GetReceiverID().equals(OtherPersonID)){
-                                MessageList.add(message);
+                            if (message.GetReceiverID().equals(OtherPersonID)){         //adding messages where receiver is the other person
+                                MessageList.add(message);                               //all relevant messages are obtained at this point
                             }
                         }
 
-                        MessageList.sort((o1,o2) -> o1.GetCreatedAt().compareTo(o2.GetCreatedAt()));
+                        MessageList.sort((o1,o2) -> o1.GetCreatedAt().compareTo(o2.GetCreatedAt()));           //now sorting by time
                         Collections.reverse(MessageList);
-                        if (OnFirstLoad==true) {
-                            SetUpRecyclerView();
+
+                        if (OnFirstLoad==true) {        //when first coming into this activity
+                            SetUpRecyclerView();        //set up adapter and recyclerview
                             OnFirstLoad=false;
                             RVMessages.scrollToPosition(0);
-                            GetMostRecentMessage();             //run this when come in to get most recent
-                            SetUpLiveQueryParse();              //then live query will call it from now on inside here
+                            GetMostRecentMessage();             //run this when come in to get most recent message-may or may not need to mark it as read
+                            SetUpLiveQueryParse();              //then live query will call it from now on
                         }
                         else{
                             conversationAdapter.notifyDataSetChanged();
                         }
-
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.e(TAG,"error retrieving messages I have sent");
                     }
                 });
-
 
     }
 
@@ -208,24 +208,19 @@ public class SendMessagesActivity extends AppCompatActivity {
                         Iterator<DataSnapshot> iter = snapshot.getChildren().iterator();
                         while (iter.hasNext()) {
                             Message message=iter.next().getValue(Message.class);
-                            if (message.GetSenderID().equals(OtherPersonID)){
+                            if (message.GetSenderID().equals(OtherPersonID)){       //adding messages sent to me where the sender is the other person
                                 MessageList.add(message);
                             }
-
                         }
 
                         QueryMyMessages();
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.e(TAG,"Error retrieving messages sent to me");
                     }
                 });
-
-
-
     }
 
     private void SetUpRecyclerView(){
@@ -234,12 +229,10 @@ public class SendMessagesActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         RVMessages.setLayoutManager(linearLayoutManager);
-
-
     }
 
-    private void GetMostRecentMessage(){        //getting most recent message-instantly update as read if receiver
-
+    private void GetMostRecentMessage(){        //getting most recent messages
+                                                //Stored on Parse-messages will be stored on Parse until they are read
         counter=0;
         ParseQuery<MostRecentMessage> query=ParseQuery.getQuery(MostRecentMessage.class);
         query.addDescendingOrder("createdAt");
@@ -249,7 +242,7 @@ public class SendMessagesActivity extends AppCompatActivity {
             public void done(List<MostRecentMessage> TheMessages, ParseException e) {
                 if (TheMessages != null) {
 
-                    for (MostRecentMessage theMostRecentMessage:TheMessages){         //finding the message
+                    for (MostRecentMessage theMostRecentMessage:TheMessages){
 
                         if (theMostRecentMessage.getReceiverId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && theMostRecentMessage.getSenderid().equals(OtherPersonID)){
                             if (counter==0) {
@@ -261,23 +254,17 @@ public class SendMessagesActivity extends AppCompatActivity {
                                 counter++;
                             }
                             else if (counter>0){
-                                theMostRecentMessage.deleteInBackground();      //if other person sent multiple messages,deleting those
-                            }
-                        }
+                                theMostRecentMessage.deleteInBackground();      //if other person sent multiple messages,deleting those extra ones
+                            }                                                   //this will give us the true most recent message
+                        }                                                       //The receiver deletes all the sender's messages except for one-the most recent msg
 
                         else if (theMostRecentMessage.getReceiverId().equals(OtherPersonID) && theMostRecentMessage.getSenderid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                             mostRecentMessage=theMostRecentMessage;     //if I was last person to send msg
-
                         }
-
                     }
-
                 }
-                //SetUpLiveQueryParse();
             }
         });
-
-
 
     }
 
@@ -294,18 +281,15 @@ public class SendMessagesActivity extends AppCompatActivity {
                     CreateNewMostRecentMessage(message);
                 }
             });
-
         }
                 //when there was no mostrecent message yet-create one
         else{
             CreateNewMostRecentMessage(message);
         }
 
-
-
     }
 
-    private void CreateNewMostRecentMessage(Message message){
+    private void CreateNewMostRecentMessage(Message message){               //creating and saving most recent message on Parse
         MostRecentMessage NewmostRecentMessage=new MostRecentMessage();
 
         NewmostRecentMessage.setReceiverHasRead(false);
@@ -331,10 +315,7 @@ public class SendMessagesActivity extends AppCompatActivity {
 
         NewmostRecentMessage.saveInBackground();
 
-
     }
-
-
 
 
     public void SetUpLiveQueryParse(){      //setting up so can mark messages as read right away-live chatting scenario
@@ -349,24 +330,14 @@ public class SendMessagesActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {         //point of this is to instantly mark message as read
-                        if (MainActivity.InsideMessagingActivity==true) {
-                            GetMostRecentMessage();
-                        }
-
-
+                        if (MainActivity.InsideMessagingActivity==true) {       //Need to cut off the live querying inside main activity while in here
+                            GetMostRecentMessage();                             //-If didn't do this, would be getting red notification counter in main when leave
+                        }                                                       //this activity
                     }
                 });
-
             }
-
         });
-
-
     }
-
-
-
-
 
 
     public String getFileName(Uri uri) {    //converting uri to string
@@ -395,7 +366,7 @@ public class SendMessagesActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         MainActivity.InsideMessagingActivity=false;
-        finish();       //added later but prob doesn't do anything
+        finish();
     }
 
 

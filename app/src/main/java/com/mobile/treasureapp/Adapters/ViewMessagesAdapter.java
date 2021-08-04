@@ -2,44 +2,29 @@ package com.mobile.treasureapp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.mobile.treasureapp.Activities.SendMessagesActivity;
 import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.Models.MostRecentMessage;
-import com.mobile.treasureapp.Models.User;
 import com.mobile.treasureapp.R;
 import com.mobile.treasureapp.TimeFormatter;
-
-import java.io.File;
 import java.util.List;
 
 public class ViewMessagesAdapter extends RecyclerView.Adapter<ViewMessagesAdapter.ViewHolder> {
 
+                                        //adapter used to display list of conversations user has had with other users
 
     private Context context;
     private List<MostRecentMessage> mostRecentMessageList;
-
 
     public ViewMessagesAdapter(Context context, List<MostRecentMessage> mostRecentMessageList ){
         this.context=context;

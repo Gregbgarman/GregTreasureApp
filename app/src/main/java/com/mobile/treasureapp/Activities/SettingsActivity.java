@@ -40,6 +40,7 @@ import java.io.IOException;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final String TAG = "SettingsActivity";
     private Button btnLogut,btnChangeProfilePic;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -96,7 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (resultCode==RESULT_OK && requestCode==123 && data!=null && data.getData()!=null){
             PictureUri=data.getData();
-           // MainActivity.ProfilePictureUri=data.getData();
 
             //convert uri to bitmap
 
@@ -112,13 +112,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public void SavePhoto(){
+    public void SavePhoto(){                //saving photo in firebase as new profile picture
         StorageReference reference=null;
-
+                                            //profile pictures are located by their path in Storage in firebase
         try {
             reference = storageReference.child("ProfilePictures/" +MainActivity.CurrentUser.GetProfilePictureID());
         }catch (Exception e){
-            Log.d("SettingsActivity","Error saving profile picture to firebase");
+            Log.e(TAG,"Error saving profile picture to firebase");
         }
 
         reference.putFile(PictureUri)
@@ -127,7 +127,6 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(SettingsActivity.this, "Saved Image", Toast.LENGTH_SHORT).show();
                         MainActivity.UpdatedPictureFlag=true;
-
                         LoadProfilePic();
                     }
                 })
@@ -135,15 +134,14 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(SettingsActivity.this, "Failed to Save New Image", Toast.LENGTH_SHORT).show();
-
                     }
                 });
 
     }
 
-
-    public void LoadProfilePic(){       //not straightforward but this is needed so app doesnt crash when making post
-
+    public void LoadProfilePic(){       //not straightforward but this is needed so app doesnt crash when making post-
+                                        //after saving photo to firebase, must instantly load it and have it because
+                                        //there is a different format used and when saving to Parse, this format is recognized
 
         StorageReference myreference=FirebaseStorage.getInstance().getReference("ProfilePictures/" +MainActivity.CurrentUser.GetProfilePictureID());
 
@@ -160,20 +158,17 @@ public class SettingsActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    Log.e(TAG,"failed to reload prof pic after saving it");
                 }
             }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<FileDownloadTask.TaskSnapshot> task) {
-
+                    Log.d(TAG,"Success reloading new prof pic from firebase");
                 }
             });
         }catch (Exception e){
-            Log.d("MainActivity","Error fetching file");
+            Log.e(TAG,"Error reloading newly saved image from firebase");
         }
-
-
-
 
     }
 

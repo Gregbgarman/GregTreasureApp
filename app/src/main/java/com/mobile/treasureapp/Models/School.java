@@ -7,16 +7,15 @@ import org.json.JSONObject;
 import org.parceler.Parcel;
 
 @Parcel
-public class School {       //will not be stored on Firebase, but created when parsing JSON and displayed in RV
+public class School {       //will not be stored on Firebase, but created when parsing JSON and displayed in recyclerview
 
     private String Schoolname;
     private String State;
 
-    public School(){    //empty constructor needed for parceler library
+    public School(){}    //empty constructor needed for parceler library
 
-    }
 
-    public School(JSONObject jsonObject) throws JSONException {
+    public School(JSONObject jsonObject) throws JSONException {             //passing in a JSON object retrieved from school API
         Schoolname=jsonObject.getString("name");
         State=jsonObject.getJSONObject("state").getString("name");
 

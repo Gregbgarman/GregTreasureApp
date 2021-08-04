@@ -21,8 +21,8 @@ import com.mobile.treasureapp.TimeFormatter;
 import org.jetbrains.annotations.NotNull;
 
 
-public class SimpleExpandDialog extends DialogFragment {
-
+public class SimpleExpandDialog extends DialogFragment {        //used when clicking on another user post while on their profile
+                                                                //simply shows the item and when it was posted
    private Post ClickedPost;
    private TextView tvPostDate,tvItemname;
    private ImageView imageView;

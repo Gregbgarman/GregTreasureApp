@@ -7,7 +7,7 @@ import com.parse.ParseObject;
 import java.util.Date;
 
 @ParseClassName("MostRecentMessage")
-public class MostRecentMessage extends ParseObject {
+public class MostRecentMessage extends ParseObject {            //stored on Parse
 
 
 public static final String KEY_SENDERID="SenderID",KEY_SENDERUSERNAME="SenderUserName",KEY_MESSAGE="MessageContent",
@@ -75,7 +75,5 @@ public static final String KEY_SENDERID="SenderID",KEY_SENDERUSERNAME="SenderUse
         public boolean getReceiverHasRead(){
             return getBoolean(KEY_RECEIVERHASREAD);
         }
-
-
 
 }

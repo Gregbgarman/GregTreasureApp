@@ -1,12 +1,10 @@
 package com.mobile.treasureapp.Activities;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.widget.ContentLoadingProgressBar;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.mobile.treasureapp.Fragments.HomeFragment;
 import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.Models.Post;
@@ -43,6 +40,8 @@ import java.io.InputStream;
 
 
 public class GetPostActivity extends AppCompatActivity implements View.OnClickListener {
+
+                                        //Activity used to create a post
 
     private EditText etItemName,etReasonForPost;
     private Spinner CategorySpinner;
@@ -102,7 +101,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
+            //not using
         }
     };
 
@@ -127,11 +126,11 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
                }
                 break;
 
-
         }
     }
 
-    public void LaunchCamera(){
+    public void LaunchCamera(){         //using built in Android camera to get image
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         photoFile = getPhotoFileUri(photoFileName);
         Uri fileProvider = FileProvider.getUriForFile(GetPostActivity.this, "com.treasureapp.fileprovider", photoFile);
@@ -143,7 +142,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void AccessGallery(){
+    public void AccessGallery(){            //accessing photo gallery, as opposed to using Android camera
         Intent intent=new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -182,8 +181,6 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
         return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 
-
-
     public boolean AllFieldsFilled(){
         if (etItemName.getText().toString().trim().length()==0){
             return false;
@@ -204,8 +201,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
-
-    public void SaveToParse(){          //not using post id or image id's anymore-going straight to parse
+    public void SaveToParse(){          //All posts are saved on Parse
         Post post=new Post();
         post.SetCategory(SpinnerSelection);
         post.SetPostReason(etReasonForPost.getText().toString().trim());
@@ -214,7 +210,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
         post.SetPosterUserName(MainActivity.CurrentUser.GetName());
         post.SetItemName(etItemName.getText().toString().trim());
 
-        String filenamePost=getFileName(PictureUri);
+        String filenamePost=getFileName(PictureUri);                        //Getting filename from URI to create ParseFile
         String FileProfilePic=getFileName(MainActivity.ProfilePictureUri);
 
         try {
@@ -224,7 +220,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
             ParseFile NewImage = new ParseFile(filenamePost, buffer);
             inputstream.close();
 
-            post.SetPostImage(NewImage);
+            post.SetPostImage(NewImage);        //storing image of post after creating Parsefile
 
         }
         catch (IOException e){
@@ -237,13 +233,13 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
             inputstream.read(buffer);
             ParseFile NewImage = new ParseFile(FileProfilePic, buffer);
             inputstream.close();
-            post.SetPosterProfilePic(NewImage);
+            post.SetPosterProfilePic(NewImage);         //storing image of profile picture
         }
         catch (IOException e){
             e.printStackTrace();
         }
 
-        post.saveInBackground(new SaveCallback() {
+        post.saveInBackground(new SaveCallback() {          //finally saving the post on Parse
             @Override
             public void done(ParseException e) {
                 Toast.makeText(GetPostActivity.this, "Post Saved!", Toast.LENGTH_SHORT).show();
@@ -253,36 +249,7 @@ public class GetPostActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
     }
-    /*
-    public void SaveToFireBase(){
-
-        //9 setter methods
-
-        Post post=new Post();
-        post.SetCategory(SpinnerSelection);
-        post.SetDatePosted(Calendar.getInstance().getTime());
-        post.SetPostReason(etReasonForPost.getText().toString().trim());
-        post.SetPosterID(MainActivity.CurrentUser.UserID);
-        post.SetPostImageID(PostID);
-        post.SetSchoolAttending(MainActivity.CurrentUser.GetSchoolAttending());
-        post.SetPosterProfilePicID(MainActivity.CurrentUser.GetProfilePictureID());
-        post.SetPosterUserName(MainActivity.CurrentUser.GetName());
-        post.SetItemName(etItemName.getText().toString().trim());
-
-        try {
-            mDatabase.child(mDatabase.push().getKey()).setValue(post);
-        }catch (Exception e){
-            Toast.makeText(this, "Question Not Saved", Toast.LENGTH_SHORT).show();
-            Log.e("GetPostActivity",e.getMessage());
-            return;
-        }
-
-        Toast.makeText(this, "Post Saved", Toast.LENGTH_SHORT).show();
-        this.finish();
-    }
-*/
 
     public String getFileName(Uri uri) {    //converting uri to string
         String result = null;

@@ -2,26 +2,19 @@ package com.mobile.treasureapp.TabFragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mobile.treasureapp.Adapters.GenericPostAdapter;
 import com.mobile.treasureapp.Adapters.ProfilePostsAdapter;
-import com.mobile.treasureapp.Fragments.HomeFragment;
 import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.Models.Post;
 import com.mobile.treasureapp.R;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +45,7 @@ public class TabFragmentPosts extends Fragment {
             }
         };
 
-        MyPosts=new ArrayList<>();
+        MyPosts=new ArrayList<>();                          //adding logged in user's posts
         for (Post post: MainActivity.postList){
             if (post.GetPosterID().equals(MainActivity.CurrentUser.GetUserID())){
                 MyPosts.add(post);

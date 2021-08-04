@@ -6,23 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.mobile.treasureapp.Models.School;
 import com.mobile.treasureapp.R;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class ViewSchoolsAdapter extends RecyclerView.Adapter<ViewSchoolsAdapter.ViewHolder> {
 
     public interface ShowDialogInterface{
        void ShowDialog(String school,String location);
-    }
+    }                                                           //adapter used for populating list of schools to choose from
 
     private ShowDialogInterface showDialogInterface;
     private Context context;
@@ -61,7 +56,6 @@ public class ViewSchoolsAdapter extends RecyclerView.Adapter<ViewSchoolsAdapter.
             tvSchoolName=itemView.findViewById(R.id.tvRVSchoolName);
             tvState=itemView.findViewById(R.id.tvRVState);
             btnChooseSchool=itemView.findViewById(R.id.btnChooseSchool);
-
 
         }
 

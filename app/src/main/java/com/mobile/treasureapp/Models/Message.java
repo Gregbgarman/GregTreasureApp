@@ -2,7 +2,7 @@ package com.mobile.treasureapp.Models;
 
 import java.util.Date;
 
-public class Message {
+public class Message {                  //stored on firebase
 
     public String SenderID;
     public String ReceiverID;

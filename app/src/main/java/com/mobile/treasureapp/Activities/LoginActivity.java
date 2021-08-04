@@ -1,11 +1,8 @@
 package com.mobile.treasureapp.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,25 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mobile.treasureapp.MainActivity;
-import com.mobile.treasureapp.Models.User;
 import com.mobile.treasureapp.R;
 
-import org.parceler.Parcels;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {      //The login screen
 
-import java.util.Iterator;
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etUserEmail,etUserPassword;
     private TextView tvSmallEmail,tvSmallPassword;
@@ -44,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private DatabaseReference mdatabase;
     private String Email,Password;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignup.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         EnableTextListeners();
-
     }
-
 
     public void CheckifLoggedIn(){
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
@@ -84,13 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, save new user in Firebase
-                 //           String uid = mdatabase.push().getKey();
-                           // User user = new User();
-                           // user.SetEmail(Email);
-                     //       user.SetUserID(uid);
-                      //      mdatabase.child(uid).setValue(user);
-
                             Intent intent = new Intent(LoginActivity.this, UserNameActivity.class);
                             intent.putExtra("UserEmail",Email);
                             startActivity(intent);
@@ -131,11 +110,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    public void EnableTextListeners(){
+    public void EnableTextListeners(){                          //as user types, either an "email" or "password" will appear above the respective box-better UI
         etUserEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    //not using
             }
 
             @Override
@@ -153,14 +132,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                    //not using
             }
         });
 
         etUserPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                //not using
             }
 
             @Override
@@ -178,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                //not using
             }
         });
 

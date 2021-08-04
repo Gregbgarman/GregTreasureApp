@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.R;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {       //simply shows splash screen for 2 seconds
 
     private ImageView ivAppLogo;
     @Override

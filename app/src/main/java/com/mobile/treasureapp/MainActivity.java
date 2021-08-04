@@ -1,14 +1,12 @@
 package com.mobile.treasureapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,21 +14,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.ResourceLoader;
-import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,12 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.mobile.treasureapp.Activities.LoginActivity;
 import com.mobile.treasureapp.Activities.SettingsActivity;
-import com.mobile.treasureapp.Activities.UserSchoolActivity;
 import com.mobile.treasureapp.Activities.ViewMessagesActivity;
 import com.mobile.treasureapp.Dialogs.DeleteDialog;
 import com.mobile.treasureapp.Dialogs.LongClickDialog;
@@ -65,29 +50,12 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.livequery.ParseLiveQueryClient;
 import com.parse.livequery.SubscriptionHandling;
-
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
-import static java.time.ZoneOffset.UTC;
 
 public class MainActivity extends AppCompatActivity implements
         HomeFragment.HomeFragmentInterface,HomeFragment.ShowOptionsInMain, TabFragmentPosts.TabFragmentPostsInterface,
@@ -99,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements
     //3. Must click next to msg icon for it to load messages-not on it directly
 
 
-
+    private static final String TAG = "MainActivity";
     public static Bitmap ProfilePictureBitmap;
     public static Uri ProfilePictureUri;
     public static User CurrentUser;
@@ -126,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UpdatedPictureFlag=false;
-        StartOnProfileFragment=false;
+        UpdatedPictureFlag=false;           //flag for when user updates picture in settings activity-needed for changing the new pic in profile fragment
+        StartOnProfileFragment=false;       //flag for starting on profile fragment (and not home fragment) when user deletes an item on the viewpager
         setContentView(R.layout.loadingscreen);
         getSupportActionBar().hide();
         Window window = getWindow();                   //setting status bar color
@@ -140,21 +108,21 @@ public class MainActivity extends AppCompatActivity implements
         postList=new ArrayList<>();
         InsideMessagingActivity=false;
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.treasuresmall);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.treasuresmall);       //setting top left "Treasure" on Action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
-        SetUpLiveMessageQuery();
+        SetUpLiveMessageQuery();        //Using Parse, listening for incoming messages from other users
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume() {         //if receive a message while not using app or in another activity, this displays them
         super.onResume();
         CheckForUnreadMessages();
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {      //when user clicks action bar buttons
 
         switch (item.getItemId()){
 
@@ -163,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case android.R.id.home:
-
+                //no action when clicking "Treasure" in top left in action bar
                 break;
 
             case R.id.icSettings:
@@ -175,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {             //creating action bar and its icons
         getMenuInflater().inflate(R.menu.action_bar, menu);
 
         MenuItem menuItem=menu.findItem(R.id.icMessages);
@@ -185,13 +153,12 @@ public class MainActivity extends AppCompatActivity implements
 
         tvNotification.setVisibility(View.INVISIBLE);
         CVNotification.setVisibility(View.INVISIBLE);
-       // CVNotification.setBackgroundColor(Color.parseColor("#F44336"));   weird rendering situation-may need this line on some PC's
-
+       // CVNotification.setBackgroundColor(Color.parseColor("#F44336"));   odd rendering situation-may need this line on some PC's
 
         return true;
     }
 
-    public void LoadProfilePic(){
+    public void LoadProfilePic(){       //Loading from google firebase
 
         StorageReference myreference=FirebaseStorage.getInstance().getReference("ProfilePictures/" +CurrentUser.GetProfilePictureID());
 
@@ -208,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            Log.e(TAG,"Failed to load profile picture");
                         }
                     }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -222,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    public void LoadCurrentUser(){      //changed from single event listener
+    public void LoadCurrentUser(){      //Loading data associated with current user-favorited items and ID of all their posts
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("User");
@@ -240,14 +207,15 @@ public class MainActivity extends AppCompatActivity implements
 
                     @Override
                     public void onCancelled(@NonNull  DatabaseError error) {
-
+                        Log.e(TAG,"Failed to retrieve user data");
                     }
                 });
 
     }
 
 
-    public void SetUpActionBottomBars(){
+    public void SetUpActionBottomBars(){        //setting up bottom navigation bar
+
         bottomNavigationView=findViewById(R.id.TheBottomNav);
         fragmentManager=getSupportFragmentManager();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -266,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-
                 return true;
             }
         });
@@ -278,14 +245,12 @@ public class MainActivity extends AppCompatActivity implements
             bottomNavigationView.setSelectedItemId(R.id.ItemHome);
         }
 
-
-        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.notificationbell);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setting color of action bar to gray
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f9f9f9")));
     }
 
 
-    public void QueryPosts(){
+    public void QueryPosts(){       //Querying all posts for a given school here to be used for duration of app use
         postList.clear();
         ParseQuery<Post> query=ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_SCHOOL);
@@ -299,16 +264,9 @@ public class MainActivity extends AppCompatActivity implements
                         postList.add(post);
                 }
 
-                //query liked items here from parse then once that is done run the below code
-                //with the liked items known-can turn colors blue of the items on feed
-                //
-
-                setContentView(R.layout.activity_main);
+                setContentView(R.layout.activity_main);         //Spinning loading bar disappears when data has loaded
                 getSupportActionBar().show();
                 SetUpActionBottomBars();
-                //Loading screen goes away here
-
-
             }
         });
 
@@ -316,25 +274,24 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     ////////////////////////////////////
-    //    interface methods
+    //    interface methods    These are called from fragments and run here to manipulate data stored in mainactivity
     ////////////////////////////////
 
     @Override
-    public void RefreshFeed() {
+    public void RefreshFeed() {     //called when user pulls to refresh feed in Home fragment
 
         QueryPosts();
     }
 
     @Override
-    public void GetOptions(Bundle bundle) {     //had to do this in main,couldnt go from home fragment
-
+    public void GetOptions(Bundle bundle) {     //had to do this in main.. GenericPostAdapter->HomeFragment->Here
         FragmentManager fm =MainActivity.this.getSupportFragmentManager();
         LongClickDialog longClickDialog=new LongClickDialog(bundle);
         longClickDialog.show(fm,"SHOW");
     }
 
     @Override
-    public void ShowDeleteDialog(Post post, Boolean IsFavorite) {
+    public void ShowDeleteDialog(Post post, Boolean IsFavorite) {           //used with viewpager for removing favorite items and posts
         FragmentManager fm =MainActivity.this.getSupportFragmentManager();
         DeleteDialog deleteDialog=new DeleteDialog(post,IsFavorite);
         deleteDialog.show(fm,"delete");
@@ -342,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @Override
-    public void UpdateFeed() {
+    public void UpdateFeed() {                  //called when user deletes a post or favorite item in DeleteDialog
         StartOnProfileFragment=true;
         QueryPosts();
     }
@@ -351,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements
     // END INTERFACE METHODS
     /////////////////////////
 
-    public void CheckForUnreadMessages(){
+    public void CheckForUnreadMessages(){       //runs when load app or get out of activities
 
         MyNotificationCounter=0;
         ParseQuery<MostRecentMessage> query=ParseQuery.getQuery(MostRecentMessage.class);
@@ -360,12 +317,12 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void done(List<MostRecentMessage> MessagesToMe, ParseException e) {
                 for (MostRecentMessage mostRecentMessage:MessagesToMe){
-                    if (mostRecentMessage.getReceiverHasRead()==false){
+                    if (mostRecentMessage.getReceiverHasRead()==false){     //Counting unread messages
                         MyNotificationCounter++;
                     }
                 }
 
-                if (MyNotificationCounter>0){
+                if (MyNotificationCounter>0){                   //changing the icon in action bar to reflect changes
                     CVNotification.setVisibility(View.VISIBLE);
                     tvNotification.setVisibility(View.VISIBLE);
                     tvNotification.setText(String.valueOf(MyNotificationCounter));
@@ -378,10 +335,11 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    public void SetUpLiveMessageQuery(){
+    public void SetUpLiveMessageQuery(){        //Parse is listening for incoming messages-Firebase only used for messages during conversatioin
+
         ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
         ParseQuery<MostRecentMessage> parseQuery = ParseQuery.getQuery(MostRecentMessage.class);
-        parseQuery.whereEqualTo(MostRecentMessage.KEY_RECEIVERID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        parseQuery.whereEqualTo(MostRecentMessage.KEY_RECEIVERID, FirebaseAuth.getInstance().getCurrentUser().getUid());        //Where user is the msg receiver
         SubscriptionHandling<MostRecentMessage> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
         subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new SubscriptionHandling.HandleEventCallback<MostRecentMessage>() {
             @Override
@@ -390,8 +348,8 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void run() {         //point of this is to update notifications as messages come in
 
-                        if (MainActivity.InsideMessagingActivity==false) {
-
+                        if (MainActivity.InsideMessagingActivity==false) {      //Don't want this to be running when in a live chat with someone
+                                                                                //-Only want alerts when not chatting
                             if (themostrecentmsg.getReceiverHasRead() == false) {
                                 MyNotificationCounter++;
                             }

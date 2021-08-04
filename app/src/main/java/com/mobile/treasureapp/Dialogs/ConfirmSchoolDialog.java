@@ -3,12 +3,9 @@ package com.mobile.treasureapp.Dialogs;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -24,17 +20,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobile.treasureapp.R;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.Headers;
 
 
@@ -43,7 +35,7 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
     public interface SaveProfileInterface{
         public void SaveProfile(String ShortSchoolName,String SchoolImageUrl);
     }
-
+                                                        //Dialog requires user to confirm school or not
     private GoogleMap TheGoogleMap;
     private String school;
     private String SchoolName;
@@ -75,14 +67,6 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
 
         QuerySchool();
 
-      //  FindOnMap();
-
-    //    https://maps.googleapis.com/maps/api/place/nearbysearch/json?&name=FloridaStateUniversity&key=AIzaSyDMg3b4aByb4RcbZM8a0siyx0z31IHjDT8
-     //   https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Florida%20State%20University&inputtype=textquery&fields=geometry,photos,name,formatted_address&key=AIzaSyDMg3b4aByb4RcbZM8a0siyx0z31IHjDT8
-
-
-   //     https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=Aap_uEAhq6CbIcFlT3kmrHDoTPvHTDI-giG-7BtqTpw1kqGozxzoVcUy180FKnWN6QXXXVZ13uwt4yeln21DPp2h9zGqeK3kn6cl8DMXzYiOyqE3luPYF9-A8fNEZkp22bQSqOB4y92xwJ1xxhFY1DBMZrlFColry5Gwr6zslNOS42teGwwR&key=AIzaSyDMg3b4aByb4RcbZM8a0siyx0z31IHjDT8
-
     }
 
     @Override
@@ -98,7 +82,7 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
 
     }
 
-    public void QuerySchool(){
+    public void QuerySchool(){                      //getting details for a school using Google Maps, also getting PhotoReference
         String SearchURL=getURL("College");
         AsyncHttpClient asyncHttpClient=new AsyncHttpClient();
         asyncHttpClient.get(SearchURL, new JsonHttpResponseHandler() {
@@ -113,7 +97,6 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
                     Lat=jsonArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                     Long=jsonArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
                     PhotoReference=jsonArray.getJSONObject(0).getJSONArray("photos").getJSONObject(0).getString("photo_reference");
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -130,7 +113,6 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
 
         });
 
-
     }
 
     public String getURL(String type){
@@ -141,14 +123,14 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
         }
 
         else if (type.equals("Photo")){
-            url="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+PhotoReference+"&key="+getResources().getString(R.string.GoogleAPIKey);
+            url="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" + PhotoReference + "&key=" +getResources().getString(R.string.GoogleAPIKey);
             SchoolImageUrl=url;
         }
 
         return url;
     }
 
-    public void SetUpImage(){
+    public void SetUpImage(){               //displaying image of school user has selected
         String PhotoURL=getURL("Photo");
         Uri uri =  Uri.parse(PhotoURL);
 
@@ -158,7 +140,7 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
 
     }
 
-    public void SetUPDialog(){
+    public void SetUPDialog(){          //displaying image of school and school position with Google Maps
         SetUpImage();
         tvSchoolName.setText(SchoolName);
         tvSchoolAddress.setText(SchoolAddress);
@@ -171,7 +153,6 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
 
     @Override
     public void onClick(View v) {
-
         switch(v.getId()){
             case R.id.btnRightSchool:
                 saveProfileInterface.SaveProfile(SchoolName,SchoolImageUrl);
@@ -185,7 +166,7 @@ public class ConfirmSchoolDialog extends DialogFragment implements OnMapReadyCal
     }
 
     @Override
-    public void onAttach(@NonNull @NotNull Context context) {
+    public void onAttach(@NonNull @NotNull Context context) {           //attaching interface
         super.onAttach(context);
 
         if(context instanceof ConfirmSchoolDialog.SaveProfileInterface){

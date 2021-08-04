@@ -1,24 +1,17 @@
 package com.mobile.treasureapp.Dialogs;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobile.treasureapp.Activities.OtherPeopleProfileActivity;
@@ -26,16 +19,12 @@ import com.mobile.treasureapp.Activities.SendMessagesActivity;
 import com.mobile.treasureapp.MainActivity;
 import com.mobile.treasureapp.Models.Post;
 import com.mobile.treasureapp.R;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LongClickDialog extends DialogFragment implements View.OnClickListener {
-
-
+public class LongClickDialog extends DialogFragment implements View.OnClickListener {       //shown when clicking on a post in home feed
 
     private CardView cvViewprofile,cvAddtofavorites,cvMessage;
     private ImageView ivProfilePic,ivpostimage;
@@ -59,7 +48,6 @@ public class LongClickDialog extends DialogFragment implements View.OnClickListe
 
 
         post =PostFromAdapter.getParcelable("f");
-
         cvViewprofile=view.findViewById(R.id.flccardviewprofile);
         cvAddtofavorites=view.findViewById(R.id.flccardviewaddtofavorite);
         cvMessage=view.findViewById(R.id.flcCardviewmsg);
@@ -87,7 +75,7 @@ public class LongClickDialog extends DialogFragment implements View.OnClickListe
         tvFavoriteMsg.setText("Add To Favorites");
 
         String firstname="";
-        for (int i=0;i<post.GetPosterUserName().length();i++){
+        for (int i=0;i<post.GetPosterUserName().length();i++){              //getting first name of user who posted item
             if (post.GetPosterUserName().charAt(i)!=' '){
                 firstname=firstname+post.GetPosterUserName().charAt(i);
             }
@@ -97,12 +85,8 @@ public class LongClickDialog extends DialogFragment implements View.OnClickListe
 
         }
 
-
-
-        tvMessagemsg.setText("Send " + firstname + " A Message");
+        tvMessagemsg.setText("Send " + firstname + " A Message");       //more personalized messages shown on screen
         tvProfileMsg.setText("View " + firstname + "'s Profile");
-
-
 
     }
 
@@ -153,13 +137,13 @@ public class LongClickDialog extends DialogFragment implements View.OnClickListe
         Likeditems.addAll(MainActivity.FavoriteItemsId);
 
 
-        if (MainActivity.FavoriteItemsId.size()==0){
+        if (MainActivity.FavoriteItemsId.size()==0){                //no needed checking for duplicates if favorite list is empty
             MainActivity.FavoriteItemsId.add(post.getObjectId());
             NewItemAdded=true;
         }
 
         else{
-            for (String Itemid:Likeditems){
+            for (String Itemid:Likeditems){                         //Can't add duplicates-checking here to prevent it
                 if (!Likeditems.contains(post.getObjectId())){
                     MainActivity.FavoriteItemsId.add(post.getObjectId().toString());
                     NewItemAdded=true;
@@ -169,19 +153,14 @@ public class LongClickDialog extends DialogFragment implements View.OnClickListe
         }
 
 
-        if (NewItemAdded==true){
-           // MainActivity.CurrentUser.SetFavoriteItemsList(Likeditems);      //getting it back in main now-useless now
+        if (NewItemAdded==true){                                //updating favorite items list on firebase if new item added
             Map<String, Object> Updates = new HashMap<>();
             Updates.put("FavoriteItemsId", MainActivity.FavoriteItemsId);
 
             DatabaseReference mdatabase=FirebaseDatabase.getInstance().getReference("User").child(MainActivity.CurrentUser.GetFirebaseKey());
             mdatabase.updateChildren(Updates);
-
-            //mdatabase.child(MainActivity.CurrentUser.GetUserID()).setValue(MainActivity.CurrentUser);
         }
 
-
     }
-
 
 }

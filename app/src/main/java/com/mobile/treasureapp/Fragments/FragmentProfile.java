@@ -45,8 +45,8 @@ public class FragmentProfile extends Fragment {
     private ImageView ivProfilePic,ivBackgroundPic;
     private TextView tvUserName,tvStudentAt;
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    private TabLayout tabLayout;            //these three are used in conjunction for paging back and forth
+    private ViewPager2 viewPager;           //for favorite items and user's posts
     private TabAdapter tabAdapter;
 
 
@@ -58,7 +58,6 @@ public class FragmentProfile extends Fragment {
     @Override
     public void onViewCreated(@NonNull  View view, @Nullable  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         tabLayout=view.findViewById(R.id.Thetablayout);
         viewPager=view.findViewById(R.id.TheViewPager);
@@ -72,7 +71,6 @@ public class FragmentProfile extends Fragment {
         tvStudentAt.setText("Student at " + MainActivity.CurrentUser.GetSchoolAttending() );
 
         Glide.with(getActivity()).load(MainActivity.ProfilePictureBitmap).circleCrop().into(ivProfilePic);
-        //Glide.with(getActivity()).load(MainActivity.BackGroundPhotoUri).into(ivBackgroundPic);
         SetUpViewPager();
     }
 
@@ -85,7 +83,7 @@ public class FragmentProfile extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
+        super.onResume();                               //if just changed profile picture in settings, flag used to update in fragment
         if (MainActivity.UpdatedPictureFlag==true){
             Glide.with(getActivity()).load(MainActivity.ProfilePictureBitmap).circleCrop().into(ivProfilePic);
             UpdatedPictureFlag=false;
@@ -107,12 +105,12 @@ public class FragmentProfile extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                    //not used
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                    //not used
             }
         });
 

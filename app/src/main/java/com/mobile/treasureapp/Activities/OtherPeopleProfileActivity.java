@@ -6,26 +6,21 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +44,7 @@ import java.util.List;
 
 public class OtherPeopleProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "OtherPeopleProfileActiv";
     private TextView tvPersonName,tvStudentAt,tvSendMessagemsg,tvPersonNameandPost;
     private ImageView ivprofilepic, ivbackgroundpic,ivMessageicon;
     private Post post;
@@ -58,7 +54,7 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
     private List<Post> UserPosts;
     private RecyclerView recyclerView;
     private ProfilePostsAdapter profilePostsAdapter;
-    private  ProfilePostsAdapter.ProfilePostsAdapterInterface profilePostsAdapterInterface;
+    private ProfilePostsAdapter.ProfilePostsAdapterInterface profilePostsAdapterInterface;
 
 
     @Override
@@ -104,9 +100,8 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
         tvPersonName.setText(post.GetPosterUserName());
         tvStudentAt.setText(post.GetSchoolAttending());
 
-
         String firstname="";
-        for (int i=0;i<post.GetPosterUserName().length();i++){
+        for (int i=0;i<post.GetPosterUserName().length();i++){          //getting users' firstname
             if (post.GetPosterUserName().charAt(i)!=' '){
                 firstname=firstname+post.GetPosterUserName().charAt(i);
             }
@@ -116,14 +111,15 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
 
         }
 
-        tvSendMessagemsg.setText("Send " + firstname + " A Message");
+        tvSendMessagemsg.setText("Send " + firstname + " A Message");   //using the user's firstname for more personalized messages
         tvPersonNameandPost.setText(firstname+"'s Posts");
         SetUpAdapter();
         LoadUser();
 
     }
 
-    private void LoadUser(){
+    private void LoadUser(){         //loading user's profile and profile picture from firebase
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("User");
         usersRef.orderByChild("UserID").equalTo(post.GetPosterID())
@@ -136,13 +132,14 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.e(TAG,"Failed to load user");
                     }
                 });
 
     }
 
-    private void LoadProfilePic(){
+    private void LoadProfilePic(){          //Loading the user's profile picture from Firebase Storage
+
         StorageReference myreference= FirebaseStorage.getInstance().getReference("ProfilePictures/" +user.GetProfilePictureID());
 
         try {
@@ -158,7 +155,7 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    Log.e(TAG,"Failed to load profile picture");
                 }
             }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -168,19 +165,20 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
                 }
             });
         }catch (Exception e){
-            Log.d("MainActivity","Error fetching file");
+            Log.e(TAG,"Error fetching file");
         }
 
     }
 
-    private void GoToMessage(){
+    private void GoToMessage(){         //launching direct messaging activity from another user's profile
+
         Intent intent = new Intent(this, SendMessagesActivity.class);
-        intent.putExtra("thebundle",bundle);       //adding bundle
-        intent.putExtra("msg","FromPosts");         //adding message
+        intent.putExtra("thebundle",bundle);
+        intent.putExtra("msg","FromPosts");
         startActivity(intent);
     }
 
-    private void SetUpAdapter(){
+    private void SetUpAdapter(){        //showing all posts that the user has made
         UserPosts=new ArrayList<>();
         profilePostsAdapter=new ProfilePostsAdapter(this,UserPosts,profilePostsAdapterInterface);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
@@ -192,7 +190,6 @@ public class OtherPeopleProfileActivity extends AppCompatActivity {
                 UserPosts.add(apost);
             }
         }
-
 
         profilePostsAdapter.notifyDataSetChanged();
     }
