@@ -14,9 +14,9 @@ to acquire these items and save money.
 
 ### Motivation
 
-I saw this app as an opportunity to further my Android development skills by implementing new
+This app was an opportunity to further Android development skills by implementing new
 features such as direct messaging and creating a social media like environment. The app also
-provided me with the chance to use Google Firebase, as a backend, for the first time. Lastly,
+provided the chance to use Google Firebase, as a backend, for the first time. Lastly,
 many old skills would be reinforced in this project, as they would be essential to development.
 
 
